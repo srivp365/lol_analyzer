@@ -1,24 +1,20 @@
 # League of Legends Analyzer
 
-A full-stack project that provides meaningful feedback and an aggregation of statistics to improve a summoner's gameplay!
 
 ## 🌟 Highlights
 
 - Robust ETL (Extract, Trasnform, Load) data ingestion pipeline that parses deeply nested / multi-layered data from api responses and turns it into a noramalized relational database
 - Used custom memory-efficient deduplication methods (use of sets) as a means of handling data quirks (overlapping frames, duplicate time frames)
-- Transforms raw match variables into dynamic, real-time coaching analytics, including laning phase gold deltas, vision control tracking, and CS benchmarking
 - Implemented a Redis caching layer with a 1-hour TTL on heavy analytical endpoints, drastically reducing PostgreSQL load and ensuring sub-millisecond response times on dashboard reloads.
-- Fully containerized stack utilizing FastAPI, React+TypeScript, and PostgreSQL (with redis for repeat requests in a short time) deployed to Oracle Cloud Infrastructure (OCI).
+- Fully containerized stack utilizing FastAPI, React+TypeScript, and PostgreSQL (with redis for repeat requests in a short time) deployed on a VM.Standard.E2.1.Micro on OCI.
 
 ## ℹ️ Overview
 
-The purpose of this software is to take the raw data from the riot api and to build out a dashboard where users can see information such as gold difference between you and your direct enemy (opponent team player who's holding the same position as you), creep score, performance index etc. These may be things you can simply see during the game, but when you're in the middle of a league game and the opps are rage baiting you it's unlikely for you to pay attention to the stats that truly matter. This acts as a way for the user to get a bird-eye view of their current performance and see their pain points (low CS, kills/assists per death etc.) to work on improving their game play.
+A small app I developed for users to be able to review their League of Legends statistics, things like CreepScore /min, Lane phase diff, Gold difference between you and your direct opposition alongside other statistics provided by the Riot API. The hope is for players to be able to have a more active understanding of where they're falling behind the competition (I'm not collecting enough gold, not killing enough creeps, dying more often than securing kills) and be able to pay more attention to this during future games!
 
 ## ⬇️ Installation Instructions
 
-To run this project locally, you will need **Python 3.10+**, **Node.js 18+**, and **Docker** installed on your machine. You will also need a [Riot Games Developer API Key](https://developer.riotgames.com/).
-
-> **⚠️ Important Note on Riot API Keys:** Standard development keys expire every 24 hours. If the backend fails to ingest data with a 401/403 error, you must regenerate the key in the Riot Developer Portal and restart the backend server.
+To run this project locally, you will need **Python 3.10+**, **Node.js 18+**, and **Docker** installed. Don't forget to grab an API key from riot!
 
 ### 1. Database (PostgreSQL)
 
@@ -63,20 +59,13 @@ The dashboard will be available at http://localhost:5173.
 
 ## 🔮 Roadmap & Next Steps
 
-This project is actively being developed to scale from a local analytics tool into a deployed, ML-enhanced platform.
+I'm still working on this project, mainly on trying to incorporate some form of Machine Learning into this, given the rich data I'm able to get from the API.
 
-- [In Progress] Cloud Deployment: Containerizing the full stack (FastAPI, React, PostgreSQL) via Docker Compose and deploying behind an Nginx reverse proxy on an Oracle Cloud Infrastructure (OCI) instance.
-
-- Machine Learning Pipeline: Building an XGBoost/LightGBM win-prediction model leveraging engineered features like Gold Diff @ 15, CS Diff @ 15, and Vision Score.
-
-- Explainable AI: Integrating SHAP (SHapley Additive exPlanations) values so the application can output human-readable, specific coaching advice based on the ML model's feature importance.
-
-- Playstyle Clustering: Utilizing K-Means clustering on historical telemetry to categorize player archetypes.
-
-- CI/CD Integration: Setting up GitHub Actions for automated testing and deployment.
+- Machine Learning Implementation: Add a win-prediction algorithm that takes in information like CS Diff, Gold Diff, Vision score etc.
+- Explainable AI: Implement an algorithm that takes the insights produced by the previous ML model, and produce human readable output based on feature weight.
 
 ## 💭 Feedback and Contributions
 
-As a first-year engineering student, I built this project to tackle real-world data engineering and full-stack challenges. I am actively looking for feedback on system architecture, database design, and React state management.
+As a first-year engineering student, I built this project as a means of bettering my full stack skills, while also learning more about Docker, OCI and sql-alchemy.
 
 If you see an area for optimization, have deployment advice, or just want to discuss the code, please feel free to open an Issue or start a Discussion.
