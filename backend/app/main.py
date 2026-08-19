@@ -40,10 +40,11 @@ def read_root(region: str, gameName: str, tagName: str, db = Depends(get_db)):
     if cached_data:
         print("Cache hit, returning data")
         cs_analysis_result = json.loads(cached_data)
-    print("Cache not present, running query")
-    cs_analysis_result = get_cs_analysis(puuid=player_puuid, db = db)
-    # ex=3600 tells the cache to delete the data after 1 hour, so we get fresh data every hour
-    redis_client.set(cache_key, json.dumps(cs_analysis_result), ex=3600)
+    else:
+        print("Cache not present, running query")
+        cs_analysis_result = get_cs_analysis(puuid=player_puuid, db = db)
+        # ex=3600 tells the cache to delete the data after 1 hour, so we get fresh data every hour
+        redis_client.set(cache_key, json.dumps(cs_analysis_result), ex=3600)
 
     # Caching logic for vision analysis
     cache_key = f"vision_analysis:{player_puuid}"
@@ -51,9 +52,10 @@ def read_root(region: str, gameName: str, tagName: str, db = Depends(get_db)):
     if cached_data:
         print("Cache hit, returning data")
         vision_analysis_result = json.loads(cached_data)
-    print("Cache not present, running query")
-    vision_analysis_result = get_vision_analysis(puuid=player_puuid, db = db)
-    redis_client.set(cache_key, json.dumps(vision_analysis_result), ex=3600)
+    else:
+        print("Cache not present, running query")
+        vision_analysis_result = get_vision_analysis(puuid=player_puuid, db = db)
+        redis_client.set(cache_key, json.dumps(vision_analysis_result), ex=3600)
 
     # Caching logic for kda analysis
     cache_key = f"kda_analysis:{player_puuid}"
@@ -61,11 +63,11 @@ def read_root(region: str, gameName: str, tagName: str, db = Depends(get_db)):
     if cached_data:
         print("Cache hit, returning data")
         kda_analysis_result = json.loads(cached_data)
-
-    print("Cache not present, running query")
-    kda_analysis_result = get_kda_analysis(puuid=player_puuid, db = db)
-    # ex=3600 tells the cache to delete the data after 1 hour, so we get fresh data every hour
-    redis_client.set(cache_key, json.dumps(kda_analysis_result), ex=3600)
+    else:
+        print("Cache not present, running query")
+        kda_analysis_result = get_kda_analysis(puuid=player_puuid, db = db)
+        # ex=3600 tells the cache to delete the data after 1 hour, so we get fresh data every hour
+        redis_client.set(cache_key, json.dumps(kda_analysis_result), ex=3600)
 
     # Caching logic for gold_diff + laning phase delta analysis
     cache_key = f"gdl_analysis:{player_puuid}"
@@ -73,11 +75,11 @@ def read_root(region: str, gameName: str, tagName: str, db = Depends(get_db)):
     if cached_data:
         print("Cache hit, returning data")
         gdl_analysis_result = json.loads(cached_data)
-
-    print("Cache not present, running query")
-    gdl_analysis_result = get_gold_diff_analysis(puuid=player_puuid,match_id=match_history[0], db = db)
-    # ex=3600 tells the cache to delete the data after 1 hour, so we get fresh data every hour
-    redis_client.set(cache_key, json.dumps(gdl_analysis_result), ex=3600)
+    else:
+        print("Cache not present, running query")
+        gdl_analysis_result = get_gold_diff_analysis(puuid=player_puuid,match_id=match_history[0], db = db)
+        # ex=3600 tells the cache to delete the data after 1 hour, so we get fresh data every hour
+        redis_client.set(cache_key, json.dumps(gdl_analysis_result), ex=3600)
 
 
 
