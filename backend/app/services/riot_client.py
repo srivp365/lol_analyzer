@@ -30,8 +30,10 @@ def get_match_history(puuid, region : str):
         raise Exception(f"Riot API error {match_history_response.status_code}: {match_history_response.json()}")
     return match_history_response.json()
 
-def get_match_data(match_id: str, region : str):
-    match_data_response = requests.get(f'https://{region}.api.riotgames.com/lol/match/v5/matches/{match_id}', params=payload)
+def get_match_data(match_id, region):
+    match_data_response = requests.get(...)
+    if match_data_response.status_code == 404:
+        return None  # signal "skip this match" instead of crashing
     if match_data_response.status_code != 200:
         raise Exception(f"Riot API error {match_data_response.status_code}: {match_data_response.json()}")
     return match_data_response.json()
