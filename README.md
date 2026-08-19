@@ -15,7 +15,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/srivp365/lol_analyzer">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="readme_pics/icon.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">League of Legends Analyzer</h3>
@@ -23,10 +23,7 @@
   <p align="center">
     project_description
     <br />
-    <a href="https://github.com/srivp365/lol_analyzer"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/srivp365/lol_analyzer">View Demo</a>
+    <a href="https://lol-analyzer.sriv.me/">View Demo</a>
     &middot;
     <a href="https://github.com/srivp365/lol_analyzer/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     &middot;
@@ -67,7 +64,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Product Name Screen Shot][product-screenshot]](https://lol-analyzer.sriv.me/)
 
 A small app I developed for users to be able to review their League of Legends statistics, things like CreepScore /min, Lane phase diff, Gold difference between you and your direct opposition alongside other statistics provided by the Riot API. The hope is for players to be able to have a more active understanding of where they're falling behind the competition (I'm not collecting enough gold, not killing enough creeps, dying more often than securing kills) and be able to pay more attention to this during future games!
 
@@ -143,7 +140,13 @@ To run this program locally, you're going to need **Python 3.10**, **Node.js 18+
 Click on the start analysis button to start.
 
 <img src="readme_pics/input.png" alt="Logo" width="80" height="80">
-Enter the summoner name, tag and region.
+Enter the summoner name, tag and region and hit Analyze.
+
+<img src="readme_pics/loading.png" alt="Logo" width="80" height="80">
+It will load, and return player not found if it doesn't find a player, otherwise it executes and redirects you to the dashboard.
+
+<img src="readme_pics/dashboard.png" alt="Logo" width="80" height="80">
+The dashboard produces an overview of the entered user. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -217,7 +220,7 @@ Project Link: [https://github.com/srivp365/lol_analyzer](https://github.com/sriv
 [license-url]: https://github.com/srivp365/lol_analyzer/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/srivp
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: readme_pics/banner.png
 
 <!-- Shields.io badges. You can a comprehensive list with many more badges at: https://github.com/inttter/md-badges -->
 [React.js]: https://img.shields.io/badge/React-%2320232a.svg?logo=react&logoColor=%2361DAFB
