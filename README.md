@@ -21,8 +21,6 @@
 <h3 align="center">League of Legends Analyzer</h3>
 
   <p align="center">
-    project_description
-    <br />
     <a href="https://lol-analyzer.sriv.me/">View Demo</a>
     &middot;
     <a href="https://github.com/srivp365/lol_analyzer/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
@@ -136,16 +134,16 @@ To run this program locally, you're going to need **Python 3.10**, **Node.js 18+
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-<img src="readme_pics/home.png" alt="Logo" width="80" height="80">
+<img src="readme_pics/home.png" alt="Logo">
 Click on the start analysis button to start.
 
-<img src="readme_pics/input.png" alt="Logo" width="80" height="80">
+<img src="readme_pics/input.png" alt="Logo">
 Enter the summoner name, tag and region and hit Analyze.
 
-<img src="readme_pics/loading.png" alt="Logo" width="80" height="80">
+<img src="readme_pics/loading.png" alt="Logo">
 It will load, and return player not found if it doesn't find a player, otherwise it executes and redirects you to the dashboard.
 
-<img src="readme_pics/dashboard.png" alt="Logo" width="80" height="80">
+<img src="readme_pics/dashboard.png" alt="Logo">
 The dashboard produces an overview of the entered user. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
