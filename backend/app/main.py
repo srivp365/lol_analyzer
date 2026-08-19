@@ -77,7 +77,10 @@ def read_root(region: str, gameName: str, tagName: str, db = Depends(get_db)):
         gdl_analysis_result = json.loads(cached_data)
     else:
         print("Cache not present, running query")
-        gdl_analysis_result = get_gold_diff_analysis(puuid=player_puuid,match_id=match_history[0], db = db)
+        if match_history:
+            gdl_analysis_result = get_gold_diff_analysis(puuid=player_puuid, match_id=match_history[0], db=db)
+        else:
+            gdl_analysis_result = None
         # ex=3600 tells the cache to delete the data after 1 hour, so we get fresh data every hour
         redis_client.set(cache_key, json.dumps(gdl_analysis_result), ex=3600)
 
