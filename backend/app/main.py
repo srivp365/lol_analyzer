@@ -31,7 +31,7 @@ app.add_middleware(
 @app.get("/{region}/{gameName}/{tagName}")
 def read_root(region: str, gameName: str, tagName: str, db = Depends(get_db)):
     player_puuid = get_puuid(game_name=gameName, tag_name=tagName, region=region)
-    match_history = get_match_history(puuid=player_puuid, region=region)
+    match_history = get_match_history(player_puuid, region=region)
     bulk_ingest(match_history,region)
 
     # Caching logic for CS analysis
