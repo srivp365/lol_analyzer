@@ -5,11 +5,11 @@ from app.models.timeline_frame import TimelineFrame
 from app.services.riot_client import get_match_data, get_match_timeline_data
 from datetime import datetime
 
-def ingest_match(match_id : str, db : Session):
+def ingest_match(match_id : str, db : Session, region : str):
     existing_match = db.get(Match, match_id)
     if existing_match:
         return {"status": "already ingested", "match_id": match_id}
-    match_info = get_match_data(match_id=match_id)
+    match_info = get_match_data(match_id=match_id, region=region)
     match = Match(
         match_id = match_info["metadata"]["matchId"],
         game_start = datetime.fromtimestamp(match_info["info"]["gameStartTimestamp"] / 1000),
@@ -18,18 +18,18 @@ def ingest_match(match_id : str, db : Session):
         queue_id = match_info["info"]["queueId"],
         map_id = match_info["info"]["mapId"]
     )
-    # personal note: order matters, so this match needs to enter the db first since we have a foreign key in 
+    # personal note: order matters, so this match needs to enter the db first since we have a foreign key in
     # match_participant that points here!
     db.add(match)
 
-    
+
 
     participants_list = match_info["info"]["participants"]
     for participant in participants_list:
-        # the value assignment per row was handled by ai to automate a repetitive task 
+        # the value assignment per row was handled by ai to automate a repetitive task
         challenges = participant.get("challenges", {})
         cs_total = participant["totalMinionsKilled"]
- 
+
         match_participant = MatchParticipant(
             match_id = match_info["metadata"]["matchId"],
             puuid = participant["puuid"],
@@ -60,11 +60,11 @@ def ingest_match(match_id : str, db : Session):
             lane_cs_at_10 = challenges.get("laneMinionsFirst10Minutes"),
         )
         db.add(match_participant)
-    
+
     # ensures that there is no duplication of frames, because that's a problem I kept running into
     # i rounded to minutes (//60000), which made the last and second last frame have the same int value, so it violated the unique key constraint I had
     seen = set()
-    frames = get_match_timeline_data(match_id=match_id)["info"]["frames"]
+    frames = get_match_timeline_data(match_id=match_id, region=region)["info"]["frames"]
     for frame in frames:
         for participant_id, pframe in frame["participantFrames"].items():
             key = (int(participant_id), frame["timestamp"] // 60000)
@@ -91,7 +91,7 @@ def ingest_match(match_id : str, db : Session):
                 total_damage_to_champs = pframe["damageStats"]["totalDamageDoneToChampions"],
                 total_damage_taken = pframe["damageStats"]["totalDamageTaken"],
             )
-            
+
             db.add(timeline_frame)
 
     db.commit()

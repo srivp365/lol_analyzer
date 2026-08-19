@@ -62,7 +62,7 @@ The dashboard will be available at http://localhost:5173.
 I'm still working on this project, mainly on trying to incorporate some form of Machine Learning into this, given the rich data I'm able to get from the API.
 
 - Machine Learning Implementation: Add a win-prediction algorithm that takes in information like CS Diff, Gold Diff, Vision score etc.
-- Explainable AI: Implement an algorithm that takes the insights produced by the previous ML model, and produce human readable output based on feature weight.
+- Explainable AI: 
 
 ## 💭 Feedback and Contributions
 

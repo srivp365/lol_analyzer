@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends # type: ignore
-from app.services.riot_client import get_match_history, get_puuid, get_match_data, get_match_timeline_data
-from app.db.base import get_db 
+from app.services.riot_client import get_match_history, get_puuid
+from app.db.base import get_db
 from app.services.ingestion import ingest_match
 from app.services.bulk_ingestion import bulk_ingest
 from app.services.analysis import get_cs_analysis, get_vision_analysis, get_gold_diff_analysis, get_kda_analysis
@@ -32,7 +32,7 @@ app.add_middleware(
 def read_root(region: str, gameName: str, tagName: str, db = Depends(get_db)):
     player_puuid = get_puuid(game_name=gameName, tag_name=tagName, region=region)
     match_history = get_match_history(puuid=player_puuid, region=region)
-    bulk_ingest(player_puuid, region=region)
+    bulk_ingest(match_history,region)
 
     # Caching logic for CS analysis
     cache_key = f"cs_analysis:{player_puuid}"
@@ -43,7 +43,7 @@ def read_root(region: str, gameName: str, tagName: str, db = Depends(get_db)):
     print("Cache not present, running query")
     cs_analysis_result = get_cs_analysis(puuid=player_puuid, db = db)
     # ex=3600 tells the cache to delete the data after 1 hour, so we get fresh data every hour
-    redis_client.set(cache_key, json.dumps(cs_analysis_result), ex=3600) 
+    redis_client.set(cache_key, json.dumps(cs_analysis_result), ex=3600)
 
     # Caching logic for vision analysis
     cache_key = f"vision_analysis:{player_puuid}"
@@ -61,7 +61,7 @@ def read_root(region: str, gameName: str, tagName: str, db = Depends(get_db)):
     if cached_data:
         print("Cache hit, returning data")
         kda_analysis_result = json.loads(cached_data)
-    
+
     print("Cache not present, running query")
     kda_analysis_result = get_kda_analysis(puuid=player_puuid, db = db)
     # ex=3600 tells the cache to delete the data after 1 hour, so we get fresh data every hour
@@ -73,13 +73,13 @@ def read_root(region: str, gameName: str, tagName: str, db = Depends(get_db)):
     if cached_data:
         print("Cache hit, returning data")
         gdl_analysis_result = json.loads(cached_data)
-    
+
     print("Cache not present, running query")
     gdl_analysis_result = get_gold_diff_analysis(puuid=player_puuid,match_id=match_history[0], db = db)
     # ex=3600 tells the cache to delete the data after 1 hour, so we get fresh data every hour
     redis_client.set(cache_key, json.dumps(gdl_analysis_result), ex=3600)
 
-    
+
 
     return {
         "summonerName": gameName,
@@ -88,11 +88,11 @@ def read_root(region: str, gameName: str, tagName: str, db = Depends(get_db)):
         "matches": match_history,
         "csAnalysis": cs_analysis_result,
         "visionAnalysis": vision_analysis_result,
-        "kdaAnalysis": kda_analysis_result, 
+        "kdaAnalysis": kda_analysis_result,
         "gdlAnalysis": gdl_analysis_result
     }
 
-    
+
 
 # @app.get("/matches")
 # def matches():
@@ -104,11 +104,11 @@ def read_root(region: str, gameName: str, tagName: str, db = Depends(get_db)):
 #     return {"status": "ok"}
 
 
-@app.post('/ingest/{match_id}')
+@app.post('/ingest/{region}/{match_id}')
 # personal note, Depends like a way to tell fast api to run this specific funcition and pass it's returned value as a parameter? -> still learning 😅
 # the use of Depends was reccomended by AI
-def ingest_data(match_id : str, db = Depends(get_db)):
-    ingest_match(match_id=match_id, db=db)
+def ingest_data(region : str, match_id : str, db = Depends(get_db)):
+    ingest_match(match_id=match_id, db=db, region = region)
     return {"status": "ok", "match_id": match_id}
 
 @app.get('/analysis/cs/{puuid}')
@@ -118,11 +118,11 @@ def cs_analysis_endpoint(puuid : str, db = Depends(get_db)):
     if cached_data:
         print("Cache hit, returning data")
         return json.loads(cached_data)
-    
+
     print("Cache not present, running query")
     cs_analysis_result = get_cs_analysis(puuid=puuid, db = db)
     # ex=3600 tells the cache to delete the data after 1 hour, so we get fresh data every hour
-    redis_client.set(cache_key, json.dumps(cs_analysis_result), ex=3600) 
+    redis_client.set(cache_key, json.dumps(cs_analysis_result), ex=3600)
     return cs_analysis_result
 
 
@@ -153,5 +153,3 @@ def gold_diff_analysis_endpoint(match_id: str, puuid: str, db = Depends(get_db))
     gold_diff_analysis_result = get_gold_diff_analysis(match_id=match_id, puuid=puuid, db = db)
     redis_client.set(cache_key, json.dumps(gold_diff_analysis_result), ex=3600)
     return gold_diff_analysis_result
-
-    

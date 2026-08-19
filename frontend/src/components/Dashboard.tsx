@@ -635,7 +635,7 @@ function DashboardStyles() {
         min-width: 230px;
         color: #8b8b8b;
         font-size: 12px;
-        
+
       }
 
       .meta {

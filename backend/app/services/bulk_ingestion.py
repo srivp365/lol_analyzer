@@ -1,12 +1,11 @@
 from app.services.riot_client import get_match_history, get_puuid
 from app.services.ingestion import ingest_match
-from app.db.base import get_db 
+from app.db.base import get_db
 
 
 
 
-def bulk_ingest(puuid : str, region : str):
+def bulk_ingest(matches : list[str], region : str):
     db = next(get_db())
-    matches = get_match_history(puuid=puuid, region=region)
     for match in matches:
-        ingest_match(match_id=match, db = db)
+        ingest_match(match_id=match, db = db, region = region)
