@@ -108,14 +108,13 @@ To run this program locally, you're going to need **Python 3.10**, **Node.js 18+
    ```
 4. Setup the backend server
   ```bash
-  cd backend
-  uv sync
-  source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
+    cd backend
+    uv sync
+    source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
 
-  # Run Alembic migrations to build the schema
-  alembic upgrade head
+    # Run Alembic migrations to build the schema
+    alembic upgrade head
   ```
-
 
 5. Enter your API Key in a .env file in the backend/ directory (find_env() will find it)
    ```sh
@@ -123,7 +122,7 @@ To run this program locally, you're going to need **Python 3.10**, **Node.js 18+
    ```
 6. Start the backend server
   ```sh
-  uv run app/main.py
+    uv run app/main.py
   ```
 5. Start the react app
    ```sh
